@@ -1,0 +1,63 @@
+basePath: /
+definitions:
+  event_sourcing_bank_system_gateway_proto_payment.CreateTransactionRequest:
+    properties:
+      account_id:
+        type: string
+      amount:
+        type: string
+      type:
+        type: string
+    type: object
+  event_sourcing_bank_system_gateway_proto_payment.CreateTransactionResponse:
+    properties:
+      id:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST -> GRPC API Gateway
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: API Gateway
+  version: "1.0"
+paths:
+  /api/v1/payment-service/payment:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: <param_description>
+        in: body
+        name: type
+        schema:
+          type: string
+      - description: <param_description>
+        in: body
+        name: amount
+        schema:
+          type: string
+      - description: <param_description>
+        in: body
+        name: account_id
+        schema:
+          type: string
+      - description: Body example
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/event_sourcing_bank_system_gateway_proto_payment.CreateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/event_sourcing_bank_system_gateway_proto_payment.CreateTransactionResponse'
+      summary: 'permission:'
+      tags:
+      - PaymentService
+swagger: "2.0"

@@ -1,0 +1,27 @@
+    file, header, err := ctx.Request.FormFile("<param_name>")
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "Invalid file param")
+	}
+	data.FileName = header.Filename
+
+	fbytes, err := io.ReadAll(file)
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "Read file failed")
+	}
+
+	w, h, err := handler.media.GetImageSize(bytes.NewBuffer(fbytes))
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Empty file: get image size failed with err=%v", err)
+	}
+	if w == 0 && h == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "Empty file: invalid size with err=%v", err)
+	}
+
+	r := bytes.NewBuffer(fbytes)
+	if w > 1000 {
+		r, err = handler.media.ResizeImage(1000, 0, r)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "Internal Error: Resize image failed with err=%v", err)
+		}
+	}
+	data.<param_name_upper_case_word> = r.Bytes()

@@ -1,0 +1,6 @@
+    <param_name_cammel_case>Temp := ctx.<param_context>("<param_name>")
+    <param_name_cammel_case>Convert, err := time.Parse(time.RFC3339, <param_name_cammel_case>Temp)
+    if err != nil {
+        return nil, err
+    }
+    <param_name_cammel_case> := timestamppb.New(<param_name_cammel_case>Convert)

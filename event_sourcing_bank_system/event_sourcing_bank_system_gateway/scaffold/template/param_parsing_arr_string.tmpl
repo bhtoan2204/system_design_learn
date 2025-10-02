@@ -1,0 +1,9 @@
+    <param_name_cammel_case>Splits := strings.Split(ctx.Query("<param_name>"), ",")
+    <param_name_cammel_case>Values := make([]string, 0)
+    for _, v := range <param_name_cammel_case>Splits {
+        if v == "" {
+            continue
+        }
+        <param_name_cammel_case>Values = append(<param_name_cammel_case>Values, v)
+    }
+    data.<param_name_upper_case_word> = <param_name_cammel_case>Values

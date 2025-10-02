@@ -1,0 +1,8 @@
+    <param_name_cammel_case>Str := ctx.<param_context>("<param_name>")
+    if <param_name_cammel_case>Str != "" {
+        <param_name_cammel_case>Value, err := strconv.ParseInt(<param_name_cammel_case>Str, 10, <param_bit>)
+        if err != nil {
+            return nil, err
+        }
+        data.<param_name_upper_case_word> = <param_name_cammel_case>Value
+    }

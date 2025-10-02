@@ -1,0 +1,3 @@
+r<service_name> := router.Group("<path>")
+r<service_name>.Use(h.Authorization())
+h.RegisterAPI<name>(r<service_name>)

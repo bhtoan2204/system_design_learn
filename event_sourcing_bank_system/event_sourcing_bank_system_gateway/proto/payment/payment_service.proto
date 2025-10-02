@@ -1,0 +1,11 @@
+syntax = "proto3";
+package payment;
+option go_package = "event_sourcing_bank_system_gateway/proto/payment;payment";
+
+import "payment/payment.proto";
+
+// /api/v1/payment-service
+service PaymentService {
+  // POST, /payment
+  rpc CreateTransaction(CreateTransactionRequest) returns (CreateTransactionResponse);
+}

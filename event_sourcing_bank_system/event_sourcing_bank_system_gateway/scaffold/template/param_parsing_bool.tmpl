@@ -1,0 +1,15 @@
+    <param_name_cammel_case>Str := ctx.<param_context>("<param_name>")
+    if <param_name_cammel_case>Str != "" {
+        <param_name_cammel_case>Value, err := strconv.ParseBool(<param_name_cammel_case>Str)
+        if err != nil {
+            return nil, err
+        }
+        fv := reflect.ValueOf(&data.<param_name_upper_case_word>).Elem()
+        if fv.Kind() == reflect.Bool {
+            fv.SetBool(<param_name_cammel_case>Value)
+        } else {
+            newPtr := reflect.New(fv.Type().Elem())
+            newPtr.Elem().SetBool(<param_name_cammel_case>Value)
+            fv.Set(newPtr)
+        }
+    }

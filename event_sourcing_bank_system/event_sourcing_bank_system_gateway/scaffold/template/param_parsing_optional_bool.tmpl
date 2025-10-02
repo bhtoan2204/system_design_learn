@@ -1,0 +1,10 @@
+    <param_name_cammel_case>Str := ctx.<param_context>("<param_name>")
+    if <param_name_cammel_case>Str == "null" {
+        data.<param_name_upper_case_word> = nil
+    } else if <param_name_cammel_case>Str != "" {
+        <param_name_cammel_case>Value, err := strconv.ParseBool(<param_name_cammel_case>Str)
+        if err != nil {
+            return nil, err
+        }
+        data.<param_name_upper_case_word> = &<param_name_cammel_case>Value
+    }

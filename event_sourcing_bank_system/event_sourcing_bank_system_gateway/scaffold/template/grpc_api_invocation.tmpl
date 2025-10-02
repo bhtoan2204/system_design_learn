@@ -1,0 +1,8 @@
+func (client *<service_name_lower_1st>Client) <api_name_lower_1st>(data interface{}, md map[string]string) (interface{}, error) {
+    ctx := monitor.GetApmContext()
+    //ctx := context.Background()
+    for k, v := range md {
+        ctx = metadata.AppendToOutgoingContext(ctx, k, v)
+    }
+    return client.grpcClient.<api_name>(ctx, data.(*<proto_package>.<request_type>))
+}
