@@ -15,5 +15,5 @@ func (h *RoutingHandler) RegisterPrivateAPI(routes *gin.RouterGroup) {
 }
 
 func (h *RoutingHandler) RegisterAPI(routes *gin.RouterGroup) {
-	routes.POST("/payment", h.handle())
+	routes.POST("/transaction", h.handle())
 }

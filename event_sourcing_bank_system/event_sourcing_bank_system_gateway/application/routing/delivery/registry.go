@@ -16,7 +16,7 @@ type routingConfig struct {
 
 func buildRegistry(cfg *settings.Config) map[string]routingConfig {
 	return map[string]routingConfig{
-		"POST:/api/v1/payment-service/payment": {
+		"POST:/api/v1/payment-service/transaction": {
 			payment.NewCreateTransactionHandler(cfg),
 			"PaymentService",
 			"CreateTransaction",

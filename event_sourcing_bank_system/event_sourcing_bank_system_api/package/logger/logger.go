@@ -129,3 +129,8 @@ func timeEncoder() zapcore.TimeEncoder {
 		enc.AppendString(t.Format(time.RFC3339Nano))
 	}
 }
+
+func WithPrefix(ctx context.Context, prefix string) *zap.SugaredLogger {
+	logger := FromContext(ctx)
+	return logger.With("prefix", prefix)
+}

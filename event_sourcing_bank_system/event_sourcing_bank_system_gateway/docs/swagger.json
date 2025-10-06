@@ -13,7 +13,7 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/api/v1/payment-service/payment": {
+        "/api/v1/payment-service/transaction": {
             "post": {
                 "consumes": [
                     "application/json"

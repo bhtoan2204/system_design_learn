@@ -4,6 +4,13 @@ option go_package = "event_sourcing_bank_system_gateway/proto/payment;payment";
 
 import "payment/payment.proto";
 
+message ErrorResponse {
+	string root_error = 1;
+	string message = 2;
+	int64 http_code = 3;
+	int64 grpc_code = 4;
+}
+
 // /api/v1/payment-service
 service PaymentService {
   // POST, /transaction

@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/payment-service/payment": {
+        "/api/v1/payment-service/transaction": {
             "post": {
                 "consumes": [
                     "application/json"

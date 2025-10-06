@@ -2,14 +2,15 @@ package application
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"event_sourcing_bank_system_gateway/application/routing/delivery"
 	"event_sourcing_bank_system_gateway/application/routing/delivery/service"
 	"event_sourcing_bank_system_gateway/application/routing/usecase"
 	_ "event_sourcing_bank_system_gateway/docs"
+	"event_sourcing_bank_system_gateway/infras/redis_client"
 	"event_sourcing_bank_system_gateway/middleware"
 	"event_sourcing_bank_system_gateway/package/logger"
 	"event_sourcing_bank_system_gateway/package/server"
@@ -29,10 +30,10 @@ type App interface {
 }
 
 type Server struct {
-	cfg        *settings.Config
-	router     *gin.Engine
-	httpServer *http.Server
-	handler    *delivery.RoutingHandler
+	cfg    *settings.Config
+	router *gin.Engine
+	// httpServer *http.Server
+	handler *delivery.RoutingHandler
 }
 
 func New(cfg *settings.Config) (App, error) {
@@ -47,6 +48,12 @@ func (s *Server) Routes(ctx context.Context) http.Handler {
 	r.MaxMultipartMemory = 50 << 20
 	r.RedirectTrailingSlash = false
 
+	// init redis for rate limit middleware
+	redisCli, err := redis_client.NewRedis(&s.cfg.RedisConfig)
+	if err != nil {
+		panic(err)
+	}
+	r.Use(middleware.RateLimitSlidingWindow(redisCli.GetClient(), middleware.LimitCfg{Max: 60, Window: time.Minute}, nil))
 	r.Use(middleware.ErrorHandler())
 	r.Use(middleware.SetRequestID())
 	r.Use(middleware.SetLogger())
@@ -56,7 +63,7 @@ func (s *Server) Routes(ctx context.Context) http.Handler {
 		c.JSON(http.StatusInternalServerError, gin.H{"errors": gin.H{"error": "something went wrong"}}) // not return detail error to client when panic
 	}))
 
-	if os.Getenv("ENVIRONMENT") == "prod" {
+	if os.Getenv("SERVER_MODE") == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -85,16 +92,15 @@ func (s *Server) Routes(ctx context.Context) http.Handler {
 	r.HEAD("/health-check", pingHandler)
 
 	// swagger
-	if os.Getenv("ENVIRONMENT") != "prod" {
+	if os.Getenv("SERVER_MODE") != "prod" {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 
 	s.router = r
+
 	s.handler = delivery.NewRoutingHandler(
 		s.cfg,
 		usecase.NewRoutingUseCase(service.NewServiceClient(s.cfg)))
-
-	fmt.Println(s.handler)
 
 	// v1 api
 	s.initPaymentRouting()

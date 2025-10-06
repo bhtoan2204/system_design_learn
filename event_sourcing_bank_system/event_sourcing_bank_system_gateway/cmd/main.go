@@ -28,6 +28,7 @@ func main() {
 
 	config, _ := config.InitLoadConfig()
 	log := logger.NewLogger(config.LogConfig.LogLevel, config.LogConfig.FilePath)
+	log.Infow("Server mode: ", zap.Any("config", config))
 	ctx = logger.WithLogger(ctx, log)
 
 	defer func() {

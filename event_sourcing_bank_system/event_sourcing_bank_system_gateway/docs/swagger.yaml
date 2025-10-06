@@ -24,7 +24,7 @@ info:
   title: API Gateway
   version: "1.0"
 paths:
-  /api/v1/payment-service/payment:
+  /api/v1/payment-service/transaction:
     post:
       consumes:
       - application/json

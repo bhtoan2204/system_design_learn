@@ -1,6 +1,9 @@
 package grpc
 
 import (
+	"fmt"
+	"strings"
+
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 
@@ -63,6 +66,9 @@ func CreateGRPCServerWithRecovery(f grpc_recovery.RecoveryHandlerFunc) *grpc.Ser
 
 // CreateGRPCClientConn ...
 func CreateGRPCClientConn(host string, tlsEnabled bool) (*grpc.ClientConn, error) {
+	if strings.TrimSpace(host) == "" {
+		return nil, fmt.Errorf("grpc target host is empty; ensure PAYMENT_SERVICE_URL or config is set")
+	}
 	secureOption := grpc.WithTransportCredentials(insecure.NewCredentials())
 	if tlsEnabled {
 		creds := credentials.NewTLS(nil)
