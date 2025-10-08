@@ -5,6 +5,8 @@ import (
 	"event_sourcing_bank_system_api/infras/grpc_infra"
 	"event_sourcing_bank_system_api/package/logger"
 	"event_sourcing_bank_system_api/package/server"
+	grpclayer "event_sourcing_bank_system_api/presentation/grpc_layer"
+	"event_sourcing_bank_system_api/proto/payment"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -42,7 +44,7 @@ func (a *app) Start(ctx context.Context) error {
 
 	healthCheck := grpc_infra.NewHealthService()
 	grpc_health_v1.RegisterHealthServer(rpcServer, healthCheck)
-
+	payment.RegisterPaymentServiceServer(rpcServer, grpclayer.NewGrpcPresentation())
 	grpcServer, err := server.New(9090)
 	if err != nil {
 		log.Error("Error creating gRPC server", zap.Error(err))

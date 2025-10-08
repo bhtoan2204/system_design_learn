@@ -21,20 +21,230 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TransferRoute int32
+
+const (
+	TransferRoute_TRANSFER_ROUTE_UNSPECIFIED TransferRoute = 0
+	TransferRoute_DOMESTIC                   TransferRoute = 1
+	TransferRoute_INTERNATIONAL              TransferRoute = 2
+)
+
+// Enum value maps for TransferRoute.
+var (
+	TransferRoute_name = map[int32]string{
+		0: "TRANSFER_ROUTE_UNSPECIFIED",
+		1: "DOMESTIC",
+		2: "INTERNATIONAL",
+	}
+	TransferRoute_value = map[string]int32{
+		"TRANSFER_ROUTE_UNSPECIFIED": 0,
+		"DOMESTIC":                   1,
+		"INTERNATIONAL":              2,
+	}
+)
+
+func (x TransferRoute) Enum() *TransferRoute {
+	p := new(TransferRoute)
+	*p = x
+	return p
+}
+
+func (x TransferRoute) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TransferRoute) Descriptor() protoreflect.EnumDescriptor {
+	return file_payment_payment_proto_enumTypes[0].Descriptor()
+}
+
+func (TransferRoute) Type() protoreflect.EnumType {
+	return &file_payment_payment_proto_enumTypes[0]
+}
+
+func (x TransferRoute) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TransferRoute.Descriptor instead.
+func (TransferRoute) EnumDescriptor() ([]byte, []int) {
+	return file_payment_payment_proto_rawDescGZIP(), []int{0}
+}
+
+type TransactionType int32
+
+const (
+	TransactionType_TransactionType_TRANSACTION_TYPE_UNSPECIFIED TransactionType = 0
+	TransactionType_TRANSFER                                     TransactionType = 1
+	TransactionType_DEPOSIT                                      TransactionType = 2
+	TransactionType_WITHDRAWAL                                   TransactionType = 3
+)
+
+// Enum value maps for TransactionType.
+var (
+	TransactionType_name = map[int32]string{
+		0: "TransactionType_TRANSACTION_TYPE_UNSPECIFIED",
+		1: "TRANSFER",
+		2: "DEPOSIT",
+		3: "WITHDRAWAL",
+	}
+	TransactionType_value = map[string]int32{
+		"TransactionType_TRANSACTION_TYPE_UNSPECIFIED": 0,
+		"TRANSFER":   1,
+		"DEPOSIT":    2,
+		"WITHDRAWAL": 3,
+	}
+)
+
+func (x TransactionType) Enum() *TransactionType {
+	p := new(TransactionType)
+	*p = x
+	return p
+}
+
+func (x TransactionType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TransactionType) Descriptor() protoreflect.EnumDescriptor {
+	return file_payment_payment_proto_enumTypes[1].Descriptor()
+}
+
+func (TransactionType) Type() protoreflect.EnumType {
+	return &file_payment_payment_proto_enumTypes[1]
+}
+
+func (x TransactionType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TransactionType.Descriptor instead.
+func (TransactionType) EnumDescriptor() ([]byte, []int) {
+	return file_payment_payment_proto_rawDescGZIP(), []int{1}
+}
+
+type FeeOption int32
+
+const (
+	FeeOption_FEE_OPTION_UNSPECIFIED FeeOption = 0
+	FeeOption_OUR                    FeeOption = 1 // sender pays
+	FeeOption_SHA                    FeeOption = 2 // shared fee
+	FeeOption_BEN                    FeeOption = 3 // beneficiary pays
+)
+
+// Enum value maps for FeeOption.
+var (
+	FeeOption_name = map[int32]string{
+		0: "FEE_OPTION_UNSPECIFIED",
+		1: "OUR",
+		2: "SHA",
+		3: "BEN",
+	}
+	FeeOption_value = map[string]int32{
+		"FEE_OPTION_UNSPECIFIED": 0,
+		"OUR":                    1,
+		"SHA":                    2,
+		"BEN":                    3,
+	}
+)
+
+func (x FeeOption) Enum() *FeeOption {
+	p := new(FeeOption)
+	*p = x
+	return p
+}
+
+func (x FeeOption) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FeeOption) Descriptor() protoreflect.EnumDescriptor {
+	return file_payment_payment_proto_enumTypes[2].Descriptor()
+}
+
+func (FeeOption) Type() protoreflect.EnumType {
+	return &file_payment_payment_proto_enumTypes[2]
+}
+
+func (x FeeOption) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FeeOption.Descriptor instead.
+func (FeeOption) EnumDescriptor() ([]byte, []int) {
+	return file_payment_payment_proto_rawDescGZIP(), []int{2}
+}
+
+type Money struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Currency string `protobuf:"bytes,1,opt,name=currency,proto3" json:"currency,omitempty"`
+	Amount   string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+}
+
+func (x *Money) Reset() {
+	*x = Money{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_payment_payment_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Money) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Money) ProtoMessage() {}
+
+func (x *Money) ProtoReflect() protoreflect.Message {
+	mi := &file_payment_payment_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Money.ProtoReflect.Descriptor instead.
+func (*Money) Descriptor() ([]byte, []int) {
+	return file_payment_payment_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Money) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+func (x *Money) GetAmount() string {
+	if x != nil {
+		return x.Amount
+	}
+	return ""
+}
+
 type CreateTransactionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type      string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Amount    string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
-	AccountId string `protobuf:"bytes,3,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	SourceAccountId string `protobuf:"bytes,1,opt,name=source_account_id,json=sourceAccountId,proto3" json:"source_account_id,omitempty"`
+	TargetAccountId string `protobuf:"bytes,2,opt,name=target_account_id,json=targetAccountId,proto3" json:"target_account_id,omitempty"`
+	Description     string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	SendAmount      *Money `protobuf:"bytes,3,opt,name=send_amount,json=sendAmount,proto3" json:"send_amount,omitempty"`
+	IdempotencyKey  string `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
 }
 
 func (x *CreateTransactionRequest) Reset() {
 	*x = CreateTransactionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_payment_payment_proto_msgTypes[0]
+		mi := &file_payment_payment_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -47,7 +257,7 @@ func (x *CreateTransactionRequest) String() string {
 func (*CreateTransactionRequest) ProtoMessage() {}
 
 func (x *CreateTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_payment_payment_proto_msgTypes[0]
+	mi := &file_payment_payment_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,26 +270,40 @@ func (x *CreateTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTransactionRequest.ProtoReflect.Descriptor instead.
 func (*CreateTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_payment_payment_proto_rawDescGZIP(), []int{0}
+	return file_payment_payment_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateTransactionRequest) GetType() string {
+func (x *CreateTransactionRequest) GetSourceAccountId() string {
 	if x != nil {
-		return x.Type
+		return x.SourceAccountId
 	}
 	return ""
 }
 
-func (x *CreateTransactionRequest) GetAmount() string {
+func (x *CreateTransactionRequest) GetTargetAccountId() string {
 	if x != nil {
-		return x.Amount
+		return x.TargetAccountId
 	}
 	return ""
 }
 
-func (x *CreateTransactionRequest) GetAccountId() string {
+func (x *CreateTransactionRequest) GetDescription() string {
 	if x != nil {
-		return x.AccountId
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateTransactionRequest) GetSendAmount() *Money {
+	if x != nil {
+		return x.SendAmount
+	}
+	return nil
+}
+
+func (x *CreateTransactionRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
 	}
 	return ""
 }
@@ -89,13 +313,14 @@ type CreateTransactionResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Deprecated: Do not use.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *CreateTransactionResponse) Reset() {
 	*x = CreateTransactionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_payment_payment_proto_msgTypes[1]
+		mi := &file_payment_payment_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -108,7 +333,7 @@ func (x *CreateTransactionResponse) String() string {
 func (*CreateTransactionResponse) ProtoMessage() {}
 
 func (x *CreateTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_payment_payment_proto_msgTypes[1]
+	mi := &file_payment_payment_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -121,9 +346,10 @@ func (x *CreateTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTransactionResponse.ProtoReflect.Descriptor instead.
 func (*CreateTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_payment_payment_proto_rawDescGZIP(), []int{1}
+	return file_payment_payment_proto_rawDescGZIP(), []int{2}
 }
 
+// Deprecated: Do not use.
 func (x *CreateTransactionResponse) GetId() string {
 	if x != nil {
 		return x.Id
@@ -136,20 +362,49 @@ var File_payment_payment_proto protoreflect.FileDescriptor
 var file_payment_payment_proto_rawDesc = []byte{
 	0x0a, 0x15, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x2f, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e,
 	0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x07, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74,
-	0x22, 0x65, 0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04,
-	0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65,
-	0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x6f,
-	0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x63,
-	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x22, 0x2b, 0x0a, 0x19, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x69, 0x64, 0x42, 0x3a, 0x5a, 0x38, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x73, 0x6f,
-	0x75, 0x72, 0x63, 0x69, 0x6e, 0x67, 0x5f, 0x62, 0x61, 0x6e, 0x6b, 0x5f, 0x73, 0x79, 0x73, 0x74,
-	0x65, 0x6d, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2f, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x3b, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x22, 0x3b, 0x0a, 0x05, 0x4d, 0x6f, 0x6e, 0x65, 0x79, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x75, 0x72,
+	0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x75, 0x72,
+	0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0xee, 0x01,
+	0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x0a, 0x11, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x41, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x2a, 0x0a, 0x11, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74,
+	0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x49, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x0b, 0x73, 0x65, 0x6e, 0x64, 0x5f, 0x61, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x61, 0x79, 0x6d,
+	0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x6f, 0x6e, 0x65, 0x79, 0x52, 0x0a, 0x73, 0x65, 0x6e, 0x64, 0x41,
+	0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x27, 0x0a, 0x0f, 0x69, 0x64, 0x65, 0x6d, 0x70, 0x6f, 0x74,
+	0x65, 0x6e, 0x63, 0x79, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e,
+	0x69, 0x64, 0x65, 0x6d, 0x70, 0x6f, 0x74, 0x65, 0x6e, 0x63, 0x79, 0x4b, 0x65, 0x79, 0x22, 0x2f,
+	0x0a, 0x19, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x02, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x02, 0x18, 0x01, 0x52, 0x02, 0x69, 0x64, 0x2a,
+	0x50, 0x0a, 0x0d, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x6f, 0x75, 0x74, 0x65,
+	0x12, 0x1e, 0x0a, 0x1a, 0x54, 0x52, 0x41, 0x4e, 0x53, 0x46, 0x45, 0x52, 0x5f, 0x52, 0x4f, 0x55,
+	0x54, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00,
+	0x12, 0x0c, 0x0a, 0x08, 0x44, 0x4f, 0x4d, 0x45, 0x53, 0x54, 0x49, 0x43, 0x10, 0x01, 0x12, 0x11,
+	0x0a, 0x0d, 0x49, 0x4e, 0x54, 0x45, 0x52, 0x4e, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x41, 0x4c, 0x10,
+	0x02, 0x2a, 0x6e, 0x0a, 0x0f, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x54, 0x79, 0x70, 0x65, 0x12, 0x30, 0x0a, 0x2c, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x5f, 0x54, 0x52, 0x41, 0x4e, 0x53, 0x41, 0x43, 0x54,
+	0x49, 0x4f, 0x4e, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49,
+	0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x54, 0x52, 0x41, 0x4e, 0x53, 0x46,
+	0x45, 0x52, 0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x44, 0x45, 0x50, 0x4f, 0x53, 0x49, 0x54, 0x10,
+	0x02, 0x12, 0x0e, 0x0a, 0x0a, 0x57, 0x49, 0x54, 0x48, 0x44, 0x52, 0x41, 0x57, 0x41, 0x4c, 0x10,
+	0x03, 0x2a, 0x42, 0x0a, 0x09, 0x46, 0x65, 0x65, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1a,
+	0x0a, 0x16, 0x46, 0x45, 0x45, 0x5f, 0x4f, 0x50, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x55, 0x4e, 0x53,
+	0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x07, 0x0a, 0x03, 0x4f, 0x55,
+	0x52, 0x10, 0x01, 0x12, 0x07, 0x0a, 0x03, 0x53, 0x48, 0x41, 0x10, 0x02, 0x12, 0x07, 0x0a, 0x03,
+	0x42, 0x45, 0x4e, 0x10, 0x03, 0x42, 0x3a, 0x5a, 0x38, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x69, 0x6e, 0x67, 0x5f, 0x62, 0x61, 0x6e, 0x6b, 0x5f, 0x73, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2f, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x3b, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -164,17 +419,23 @@ func file_payment_payment_proto_rawDescGZIP() []byte {
 	return file_payment_payment_proto_rawDescData
 }
 
-var file_payment_payment_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_payment_payment_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_payment_payment_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_payment_payment_proto_goTypes = []interface{}{
-	(*CreateTransactionRequest)(nil),  // 0: payment.CreateTransactionRequest
-	(*CreateTransactionResponse)(nil), // 1: payment.CreateTransactionResponse
+	(TransferRoute)(0),                // 0: payment.TransferRoute
+	(TransactionType)(0),              // 1: payment.TransactionType
+	(FeeOption)(0),                    // 2: payment.FeeOption
+	(*Money)(nil),                     // 3: payment.Money
+	(*CreateTransactionRequest)(nil),  // 4: payment.CreateTransactionRequest
+	(*CreateTransactionResponse)(nil), // 5: payment.CreateTransactionResponse
 }
 var file_payment_payment_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: payment.CreateTransactionRequest.send_amount:type_name -> payment.Money
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_payment_payment_proto_init() }
@@ -184,7 +445,7 @@ func file_payment_payment_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_payment_payment_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateTransactionRequest); i {
+			switch v := v.(*Money); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -196,6 +457,18 @@ func file_payment_payment_proto_init() {
 			}
 		}
 		file_payment_payment_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateTransactionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_payment_payment_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateTransactionResponse); i {
 			case 0:
 				return &v.state
@@ -213,13 +486,14 @@ func file_payment_payment_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_payment_payment_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      3,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_payment_payment_proto_goTypes,
 		DependencyIndexes: file_payment_payment_proto_depIdxs,
+		EnumInfos:         file_payment_payment_proto_enumTypes,
 		MessageInfos:      file_payment_payment_proto_msgTypes,
 	}.Build()
 	File_payment_payment_proto = out.File

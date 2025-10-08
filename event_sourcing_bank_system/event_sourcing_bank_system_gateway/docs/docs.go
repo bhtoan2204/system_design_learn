@@ -34,7 +34,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "\u003cparam_description\u003e",
-                        "name": "type",
+                        "name": "source_account_id",
                         "in": "body",
                         "schema": {
                             "type": "string"
@@ -42,7 +42,7 @@ const docTemplate = `{
                     },
                     {
                         "description": "\u003cparam_description\u003e",
-                        "name": "amount",
+                        "name": "target_account_id",
                         "in": "body",
                         "schema": {
                             "type": "string"
@@ -50,7 +50,23 @@ const docTemplate = `{
                     },
                     {
                         "description": "\u003cparam_description\u003e",
-                        "name": "account_id",
+                        "name": "description",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "\u003cparam_description\u003e",
+                        "name": "send_amount",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/event_sourcing_bank_system_gateway_proto_payment.Money"
+                        }
+                    },
+                    {
+                        "description": "\u003cparam_description\u003e",
+                        "name": "idempotency_key",
                         "in": "body",
                         "schema": {
                             "type": "string"
@@ -81,13 +97,19 @@ const docTemplate = `{
         "event_sourcing_bank_system_gateway_proto_payment.CreateTransactionRequest": {
             "type": "object",
             "properties": {
-                "account_id": {
+                "description": {
                     "type": "string"
                 },
-                "amount": {
+                "idempotency_key": {
                     "type": "string"
                 },
-                "type": {
+                "send_amount": {
+                    "$ref": "#/definitions/event_sourcing_bank_system_gateway_proto_payment.Money"
+                },
+                "source_account_id": {
+                    "type": "string"
+                },
+                "target_account_id": {
                     "type": "string"
                 }
             }
@@ -96,6 +118,18 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "description": "Deprecated: Do not use.",
+                    "type": "string"
+                }
+            }
+        },
+        "event_sourcing_bank_system_gateway_proto_payment.Money": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "currency": {
                     "type": "string"
                 }
             }

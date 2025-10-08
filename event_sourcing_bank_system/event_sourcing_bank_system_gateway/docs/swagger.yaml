@@ -2,16 +2,28 @@ basePath: /
 definitions:
   event_sourcing_bank_system_gateway_proto_payment.CreateTransactionRequest:
     properties:
-      account_id:
+      description:
         type: string
-      amount:
+      idempotency_key:
         type: string
-      type:
+      send_amount:
+        $ref: '#/definitions/event_sourcing_bank_system_gateway_proto_payment.Money'
+      source_account_id:
+        type: string
+      target_account_id:
         type: string
     type: object
   event_sourcing_bank_system_gateway_proto_payment.CreateTransactionResponse:
     properties:
       id:
+        description: 'Deprecated: Do not use.'
+        type: string
+    type: object
+  event_sourcing_bank_system_gateway_proto_payment.Money:
+    properties:
+      amount:
+        type: string
+      currency:
         type: string
     type: object
 host: localhost:8080
@@ -31,17 +43,27 @@ paths:
       parameters:
       - description: <param_description>
         in: body
-        name: type
+        name: source_account_id
         schema:
           type: string
       - description: <param_description>
         in: body
-        name: amount
+        name: target_account_id
         schema:
           type: string
       - description: <param_description>
         in: body
-        name: account_id
+        name: description
+        schema:
+          type: string
+      - description: <param_description>
+        in: body
+        name: send_amount
+        schema:
+          $ref: '#/definitions/event_sourcing_bank_system_gateway_proto_payment.Money'
+      - description: <param_description>
+        in: body
+        name: idempotency_key
         schema:
           type: string
       - description: Body example

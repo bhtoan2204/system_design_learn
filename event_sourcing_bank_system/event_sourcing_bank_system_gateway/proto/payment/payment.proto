@@ -2,12 +2,40 @@ syntax = "proto3";
 package payment;
 option go_package = "event_sourcing_bank_system_gateway/proto/payment;payment";
 
-message CreateTransactionRequest {
-    string type = 1;
+message Money {
+    string currency = 1;
     string amount = 2;
-    string account_id = 3;
+  }
+
+enum TransferRoute {
+    TRANSFER_ROUTE_UNSPECIFIED = 0;
+    DOMESTIC = 1;
+    INTERNATIONAL = 2;
+}
+
+enum TransactionType {
+    TransactionType_TRANSACTION_TYPE_UNSPECIFIED = 0;
+    TRANSFER = 1;
+    DEPOSIT = 2;
+    WITHDRAWAL = 3;
+}
+
+enum FeeOption {
+    FEE_OPTION_UNSPECIFIED = 0;
+    OUR = 1; // sender pays
+    SHA = 2; // shared fee
+    BEN = 3; // beneficiary pays
+}
+
+message CreateTransactionRequest {
+    string source_account_id = 1;
+    string target_account_id = 2;
+    string description = 4;
+    Money send_amount = 3;
+
+    string idempotency_key = 5;
 }
 
 message CreateTransactionResponse {
-    string id = 1;
+    string id = 1 [deprecated = true];
 }

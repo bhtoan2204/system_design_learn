@@ -22,11 +22,13 @@ func NewCreateTransactionHandler(cfg *settings.Config) *createTransactionHandler
 // @Tags		PaymentService
 // @Accept		json
 // @Produce	json
-// @Param		type		body		string								false	"<param_description>"
-// @Param		amount		body		string								false	"<param_description>"
-// @Param		account_id	body		string								false	"<param_description>"
-// @Param		body		body		payment.CreateTransactionRequest	true	"Body example"
-// @Success	200			{object}	payment.CreateTransactionResponse
+// @Param		source_account_id	body		string								false	"<param_description>"
+// @Param		target_account_id	body		string								false	"<param_description>"
+// @Param		description			body		string								false	"<param_description>"
+// @Param		send_amount			body		payment.Money						false	"<param_description>"
+// @Param		idempotency_key		body		string								false	"<param_description>"
+// @Param		body				body		payment.CreateTransactionRequest	true	"Body example"
+// @Success	200					{object}	payment.CreateTransactionResponse
 // @Router		/api/v1/payment-service/transaction [post]
 func (handler *createTransactionHandler) Handle(ctx *wrapper.Context) (interface{}, error) {
 	monitor.SetApmContext(apm.DetachedContext(ctx.Request.Context()))

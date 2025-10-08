@@ -57,6 +57,9 @@ func newSentinel(cfg *settings.RedisConfig) (*redis.Client, error) {
 		DialTimeout:      time.Duration(cfg.DialTimeoutSeconds) * time.Second,
 		ReadTimeout:      time.Duration(cfg.ReadTimeoutSeconds) * time.Second,
 		WriteTimeout:     time.Duration(cfg.WriteTimeoutSeconds) * time.Second,
+		// Disable unsupported features for compatibility with older Redis versions
+		DisableIdentity: true,
+		Protocol:        2, // Force RESP2 protocol to avoid newer features
 	}), nil
 }
 
@@ -70,6 +73,9 @@ func newStandAlone(cfg *settings.RedisConfig) (*redis.Client, error) {
 	opts.DialTimeout = time.Duration(cfg.DialTimeoutSeconds) * time.Second
 	opts.ReadTimeout = time.Duration(cfg.ReadTimeoutSeconds) * time.Second
 	opts.WriteTimeout = time.Duration(cfg.WriteTimeoutSeconds) * time.Second
+	// Disable unsupported features for compatibility with older Redis versions
+	opts.DisableIdentity = true
+	opts.Protocol = 2 // Force RESP2 protocol to avoid newer features
 
 	return redis.NewClient(opts), nil
 }
