@@ -1,0 +1,14 @@
+aws_infra/.terraform/
+aws_infra/*.tfstate
+aws_infra/*.tfstate.*
+aws_infra/*.tfplan
+aws_infra/*.binary
+aws_infra/plan.json
+aws_infra/terraform.tfvars
+aws_infra/*.tfvars.json
+aws_infra/crash.log
+aws_infra/crash.*.log
+aws_infra/*.backup
+aws_infra/*.bak
+aws_infra/infracost*.json
+
