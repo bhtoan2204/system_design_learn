@@ -1,0 +1,154 @@
+openapi: 3.1.0
+info:
+  title: University Admission API
+  version: "1.0.0"
+  description: |
+    Hệ thống tuyển sinh đại học mô phỏng theo kiến trúc DDD + Clean Architecture.
+servers:
+  - url: http://localhost:8080
+paths:
+  /applications:
+    post:
+      summary: Submit application
+      description: Thí sinh nộp hồ sơ xét tuyển.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitApplicationRequest"
+      responses:
+        "201":
+          description: Application submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitApplicationResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /applications/{applicationId}/issue-offer:
+    post:
+      summary: Issue offer
+      description: Hệ thống chấm điểm và phát hành kết quả trúng tuyển.
+      parameters:
+        - in: path
+          name: applicationId
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Offer issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssueOfferResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /offers/{offerId}/accept:
+    post:
+      summary: Accept offer
+      description: Thí sinh chấp nhận kết quả trúng tuyển.
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Offer accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceptOfferResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /enrollments:
+    post:
+      summary: Confirm enrollment
+      description: Thí sinh xác nhận nhập học sau khi chấp nhận offer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmEnrollmentRequest"
+      responses:
+        "200":
+          description: Enrollment confirmed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfirmEnrollmentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  schemas:
+    SubmitApplicationRequest:
+      type: object
+      required:
+        - applicantId
+        - programId
+      properties:
+        applicantId:
+          type: string
+          example: 123
+        programId:
+          type: string
+          example: computer-science
+    SubmitApplicationResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+        submittedAt:
+          type: string
+          format: date-time
+    IssueOfferResponse:
+      type: object
+      properties:
+        offerId:
+          type: string
+        score:
+          type: number
+          format: float
+        expiresAt:
+          type: string
+          format: date-time
+    AcceptOfferResponse:
+      type: object
+      properties:
+        acceptedAt:
+          type: string
+          format: date-time
+    ConfirmEnrollmentRequest:
+      type: object
+      required:
+        - applicationId
+        - offerId
+      properties:
+        applicationId:
+          type: string
+        offerId:
+          type: string
+    ConfirmEnrollmentResponse:
+      type: object
+      properties:
+        enrollmentId:
+          type: string
+        confirmedAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

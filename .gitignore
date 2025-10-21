@@ -12,3 +12,4 @@ aws_infra/*.backup
 aws_infra/*.bak
 aws_infra/infracost*.json
 
+university_admission_system/.gocache/
