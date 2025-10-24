@@ -1,1 +1,0 @@
-ssh -i ~/.ssh/id_rsa ec2-user@{{output_ip}}

@@ -1,15 +1,76 @@
-aws_infra/.terraform/
-aws_infra/*.tfstate
-aws_infra/*.tfstate.*
-aws_infra/*.tfplan
-aws_infra/*.binary
-aws_infra/plan.json
-aws_infra/terraform.tfvars
-aws_infra/*.tfvars.json
-aws_infra/crash.log
-aws_infra/crash.*.log
-aws_infra/*.backup
-aws_infra/*.bak
-aws_infra/infracost*.json
+# ==========================================
+# 🌱 Universal Terraform .gitignore (dynamic)
+# Works for any Terraform repo layout (modules/, environments/, etc.)
+# ==========================================
 
-university_admission_system/.gocache/
+# --- Terraform working directories & cache ---
+**/.terraform/
+**/.terraform.lock.hcl
+
+# --- Local state files (always sensitive) ---
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/crash.*.log
+
+# --- Variable definition files (often contain secrets) ---
+**/*.tfvars
+**/*.tfvars.json
+**/terraform.tfvars
+
+# --- Backup & plan outputs ---
+**/*.backup
+**/*.tfplan
+
+# --- Override & local config files ---
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+**/.terraformrc
+**/terraform.rc
+
+# --- Sensitive credentials or env files ---
+**/*.pem
+**/*.key
+**/*.crt
+**/*.csr
+**/*.cer
+**/*.pub
+**/.env
+**/.env.*
+**/*.env
+**/*.secret
+**/*.config.local
+
+# --- Logs, cache, and temp dirs ---
+**/*.log
+**/logs/
+**/tmp/
+**/temp/
+**/.cache/
+**/output/
+
+# --- Editor / OS specific ---
+# macOS
+**/.DS_Store
+**/.AppleDouble
+**/.LSOverride
+
+# Windows
+**/Thumbs.db
+**/ehthumbs.db
+**/Desktop.ini
+
+# IDEs
+**/.idea/
+**/.vscode/
+**/*.iml
+
+# --- Build directories for auxiliary tools ---
+**/venv/
+**/node_modules/
+**/dist/
+**/bin/
+**/build/
+**/.gocache/
