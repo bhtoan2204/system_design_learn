@@ -1,0 +1,43 @@
+package middleware
+
+import (
+	"clean_architect/constant"
+	"context"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+func SetRequestID() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		requestID := c.Request.Header.Get("X-Request-ID")
+		if requestID == "" {
+			uid, err := uuid.NewRandom()
+			if err == nil {
+				requestID = uid.String()
+			}
+		}
+
+		ctx := withRequestID(c.Request.Context(), requestID)
+		c.Request = c.Request.WithContext(ctx)
+		c.Writer.Header().Set("X-Request-ID", requestID)
+		c.Next()
+	}
+}
+
+func RequestIDFromCtx(ctx context.Context) string {
+	v := ctx.Value(constant.CtxKeyRequestID)
+	if v == nil {
+		return ""
+	}
+
+	if val, ok := v.(string); ok {
+		return val
+	}
+
+	return ""
+}
+
+func withRequestID(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, constant.CtxKeyRequestID, id)
+}
