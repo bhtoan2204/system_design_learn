@@ -3,6 +3,7 @@ package config
 type Config struct {
 	Server   Server
 	Database Database
+	JWT      JWT
 }
 
 type Server struct {
@@ -16,4 +17,9 @@ type Database struct {
 	MaxIdleConnNumber      int    `env:"DB_MAX_IDLE_CONN_NUMBER"`
 	ConnMaxLifeTimeSeconds int64  `env:"DB_CONN_MAX_LIFE_TIME_SECONDS"`
 	ConnMaxIdleTimeSeconds int64  `env:"DB_CONN_MAX_IDLE_TIME_SECONDS"`
+}
+
+type JWT struct {
+	SecretKey     string `env:"JWT_SECRET_KEY" default:"your-secret-key-change-in-production"`
+	TokenLifetime int    `env:"JWT_TOKEN_LIFETIME_HOURS" default:"24"` // in hours
 }

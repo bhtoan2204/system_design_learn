@@ -19,48 +19,6 @@ func NewUserHandler(userUseCase usecase.UserUseCase) *UserHandler {
 	}
 }
 
-// CreateUser handles POST /users
-func (h *UserHandler) CreateUser(c *gin.Context) {
-	ctx := c.Request.Context()
-	requestID := middleware.RequestIDFromCtx(ctx)
-
-	var req dto.CreateUserRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
-			RequestID: requestID,
-			Error:     "Invalid request body",
-			Message:   err.Error(),
-		})
-		return
-	}
-
-	user, err := h.userUseCase.CreateUser(ctx, usecase.CreateUserInput{
-		Username: req.Username,
-		Email:    req.Email,
-		Password: req.Password,
-	})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, dto.ErrorResponse{
-			RequestID: requestID,
-			Error:     "Failed to create user",
-			Message:   err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusCreated, dto.SuccessResponse{
-		RequestID: requestID,
-		Data: dto.UserResponse{
-			ID:        user.ID,
-			Username:  user.Username,
-			Email:     user.Email,
-			CreatedAt: user.CreatedAt,
-			UpdatedAt: user.UpdatedAt,
-		},
-	})
-}
-
-// GetUserByID handles GET /users/:id
 func (h *UserHandler) GetUserByID(c *gin.Context) {
 	ctx := c.Request.Context()
 	requestID := middleware.RequestIDFromCtx(ctx)
@@ -97,7 +55,6 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 	})
 }
 
-// ListUsers handles GET /users
 func (h *UserHandler) ListUsers(c *gin.Context) {
 	ctx := c.Request.Context()
 	requestID := middleware.RequestIDFromCtx(ctx)
@@ -129,7 +86,6 @@ func (h *UserHandler) ListUsers(c *gin.Context) {
 	})
 }
 
-// UpdateUser handles PUT /users/:id
 func (h *UserHandler) UpdateUser(c *gin.Context) {
 	ctx := c.Request.Context()
 	requestID := middleware.RequestIDFromCtx(ctx)
@@ -180,7 +136,6 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 	})
 }
 
-// DeleteUser handles DELETE /users/:id
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	ctx := c.Request.Context()
 	requestID := middleware.RequestIDFromCtx(ctx)

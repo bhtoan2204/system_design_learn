@@ -4,8 +4,11 @@ import (
 	"clean_architect/application/usecase"
 	"clean_architect/config"
 	"clean_architect/env"
+	"clean_architect/infrastructure/jwt"
+	"clean_architect/infrastructure/persistent/repository"
 	"clean_architect/presentation/http"
 	"context"
+	"time"
 )
 
 type Presenter interface {
@@ -18,8 +21,20 @@ type presenter struct {
 }
 
 func NewPresenter(cfg *config.Config, env *env.Env) Presenter {
-	usecase := usecase.NewUsecase()
-	appHttp := http.New(usecase)
+	// Initialize JWT service
+	jwtService := jwt.NewJWTService(
+		cfg.JWT.SecretKey,
+		time.Duration(cfg.JWT.TokenLifetime)*time.Hour,
+	)
+
+	// Initialize repositories
+	repos := repository.NewRepos(env, env.Database())
+
+	// Initialize use cases
+	usecases := usecase.NewUsecase(repos, jwtService)
+
+	// Initialize HTTP layer
+	appHttp := http.New(usecases)
 	return &presenter{appHttp: appHttp}
 }
 

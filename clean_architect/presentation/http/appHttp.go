@@ -31,7 +31,10 @@ func (a *appHttp) Routes(ctx context.Context) http.Handler {
 	r.Use(middleware.SetRequestID())
 
 	userHandler := handler.NewUserHandler(a.usecase.UserUseCase())
-	router.RegisterV1Routes(r.Group("/api/v1"), userHandler)
+	authHandler := handler.NewAuthHandler(a.usecase.AuthUseCase())
+
+	v1Router := r.Group("/api/v1")
+	router.RegisterV1Routes(v1Router, userHandler, authHandler, a.usecase.AuthUseCase())
 
 	return r
 }
