@@ -1,0 +1,109 @@
+version: "3.8"
+
+services:
+  citus_coordinator:
+    image: citusdata/citus:12.1
+    container_name: citus_coordinator
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: appdb
+      PGPASSWORD: secret
+    ports:
+      - "5432:5432"
+    depends_on:
+      - citus_worker_1
+      - citus_worker_2
+      - citus_worker_3
+    command:
+      - bash
+      - -c
+      - |
+        docker-entrypoint.sh postgres &
+        wait_for_worker() {
+          local host=$1
+          echo "Waiting for ${host} to be ready..."
+          until psql -h "${host}" -U postgres -Atqc "SELECT 1 FROM pg_extension WHERE extname = 'citus';" >/dev/null 2>&1; do
+            sleep 1
+          done
+          echo "${host} ready."
+        }
+        sleep 5 &&
+        psql -U postgres -d appdb -c "CREATE EXTENSION IF NOT EXISTS citus;" &&
+        wait_for_worker citus_worker_1 &&
+        psql -U postgres -d appdb -c "SELECT * FROM master_add_node('citus_worker_1', 5432);" &&
+        wait_for_worker citus_worker_2 &&
+        psql -U postgres -d appdb -c "SELECT * FROM master_add_node('citus_worker_2', 5432);" &&
+        wait_for_worker citus_worker_3 &&
+        psql -U postgres -d appdb -c "SELECT * FROM master_add_node('citus_worker_3', 5432);" &&
+        wait
+    networks:
+      - citus_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d appdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  citus_worker_1:
+    image: citusdata/citus:12.1
+    container_name: citus_worker_1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: appdb
+      PGPASSWORD: secret
+    command:
+      - bash
+      - -c
+      - |
+        docker-entrypoint.sh postgres &
+        sleep 10 &&
+        psql -U postgres -d appdb -c "CREATE EXTENSION IF NOT EXISTS citus;" &&
+        wait
+    networks:
+      - citus_network
+    ports:
+      - "5433:5432"
+
+  citus_worker_2:
+    image: citusdata/citus:12.1
+    container_name: citus_worker_2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: appdb
+      PGPASSWORD: secret
+    command:
+      - bash
+      - -c
+      - |
+        docker-entrypoint.sh postgres &
+        sleep 10 &&
+        psql -U postgres -d appdb -c "CREATE EXTENSION IF NOT EXISTS citus;" &&
+        wait
+    networks:
+      - citus_network
+
+  citus_worker_3:
+    image: citusdata/citus:12.1
+    container_name: citus_worker_3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: appdb
+      PGPASSWORD: secret
+    command:
+      - bash
+      - -c
+      - |
+        docker-entrypoint.sh postgres &
+        sleep 10 &&
+        psql -U postgres -d appdb -c "CREATE EXTENSION IF NOT EXISTS citus;" &&
+        wait
+    networks:
+      - citus_network
+
+networks:
+  citus_network:
+    driver: bridge
