@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  socket-gateway:
+    build:
+      context: ./socket_gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./socket_gateway:/app
+    depends_on:
+      - socket-api
+    networks:
+      - socket-network
+
+  socket-api:
+    build:
+      context: ./socket_api
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    volumes:
+      - ./socket_api:/app
+    depends_on:
+      - socket-gateway
+    networks:
+      - socket-network
+    deploy:
+      mode: replicated
+      replicas: 2
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis:/data
+    networks:
+      - socket-network
+
+networks:
+  socket-network:
+    driver: bridge
