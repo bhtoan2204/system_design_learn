@@ -1,0 +1,2 @@
+dev:
+	./mvnw quarkus:dev

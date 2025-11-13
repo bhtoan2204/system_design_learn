@@ -1,331 +1,59 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"os"
 	"time"
 
 	"go.temporal.io/sdk/activity"
 )
 
-type BookingRequest struct {
-	BookingID string `json:"bookingId"`
-}
+// --- Activities ---
 
-type BookingResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-}
-
-// BookHotelActivity calls the hotel service to book a hotel
 func BookHotelActivity(ctx context.Context, input HotelWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Booking hotel", "input", input)
-
-	hotelServiceURL := getEnv("HOTEL_SERVICE_URL", "http://localhost:8081")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", hotelServiceURL+"/book",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call hotel service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("hotel service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("hotel booking failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Hotel booked successfully")
+	logger.Info(fmt.Sprintf("[BookHotelActivity] Booking hotel with ID: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond) // simulate processing
+	logger.Info(fmt.Sprintf("[BookHotelActivity] Hotel booked successfully: %s", input.BookingID))
 	return nil
 }
 
-// CancelHotelActivity calls the hotel service to cancel a hotel booking
 func CancelHotelActivity(ctx context.Context, input HotelWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Cancelling hotel", "input", input)
-
-	hotelServiceURL := getEnv("HOTEL_SERVICE_URL", "http://localhost:8081")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", hotelServiceURL+"/cancel",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call hotel service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("hotel service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("hotel cancellation failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Hotel cancelled successfully")
+	logger.Info(fmt.Sprintf("[CancelHotelActivity] Cancelling hotel booking: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond)
+	logger.Info(fmt.Sprintf("[CancelHotelActivity] Hotel cancelled: %s", input.BookingID))
 	return nil
 }
 
-// BookFlightActivity calls the flight service to book a flight
 func BookFlightActivity(ctx context.Context, input FlightWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Booking flight", "input", input)
-
-	flightServiceURL := getEnv("FLIGHT_SERVICE_URL", "http://localhost:8082")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", flightServiceURL+"/book",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call flight service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("flight service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("flight booking failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Flight booked successfully")
+	logger.Info(fmt.Sprintf("[BookFlightActivity] Booking flight with ID: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond)
+	logger.Info(fmt.Sprintf("[BookFlightActivity] Flight booked successfully: %s", input.BookingID))
 	return nil
 }
 
-// CancelFlightActivity calls the flight service to cancel a flight booking
 func CancelFlightActivity(ctx context.Context, input FlightWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Cancelling flight", "input", input)
-
-	flightServiceURL := getEnv("FLIGHT_SERVICE_URL", "http://localhost:8082")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", flightServiceURL+"/cancel",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call flight service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("flight service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("flight cancellation failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Flight cancelled successfully")
+	logger.Info(fmt.Sprintf("[CancelFlightActivity] Cancelling flight booking: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond)
+	logger.Info(fmt.Sprintf("[CancelFlightActivity] Flight cancelled: %s", input.BookingID))
 	return nil
 }
 
-// BookCarActivity calls the car service to book a car
 func BookCarActivity(ctx context.Context, input CarWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Booking car", "input", input)
-
-	carServiceURL := getEnv("CAR_SERVICE_URL", "http://localhost:8083")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", carServiceURL+"/book",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call car service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("car service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("car booking failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Car booked successfully")
+	logger.Info(fmt.Sprintf("[BookCarActivity] Booking car with ID: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond)
+	logger.Info(fmt.Sprintf("[BookCarActivity] Car booked successfully: %s", input.BookingID))
 	return nil
 }
 
-// CancelCarActivity calls the car service to cancel a car booking
 func CancelCarActivity(ctx context.Context, input CarWorkflowInput) error {
 	logger := activity.GetLogger(ctx)
-	logger.Info("Cancelling car", "input", input)
-
-	carServiceURL := getEnv("CAR_SERVICE_URL", "http://localhost:8083")
-
-	bookingReq := BookingRequest{
-		BookingID: input.BookingID,
-	}
-
-	reqBody, err := json.Marshal(bookingReq)
-	if err != nil {
-		return fmt.Errorf("failed to marshal request: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", carServiceURL+"/cancel",
-		bytes.NewReader(reqBody))
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call car service: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("car service returned error: status=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	var bookingResp BookingResponse
-	if err := json.NewDecoder(resp.Body).Decode(&bookingResp); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if !bookingResp.Success {
-		return fmt.Errorf("car cancellation failed: %s", bookingResp.Message)
-	}
-
-	logger.Info("Car cancelled successfully")
+	logger.Info(fmt.Sprintf("[CancelCarActivity] Cancelling car booking: %s", input.BookingID))
+	time.Sleep(500 * time.Millisecond)
+	logger.Info(fmt.Sprintf("[CancelCarActivity] Car cancelled: %s", input.BookingID))
 	return nil
-}
-
-// Helper function to get environment variable with default
-func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
 }

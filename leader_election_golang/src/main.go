@@ -76,7 +76,7 @@ func main() {
 		}
 		log.Println("[scheduler] shutting down (lost leadership)")
 		sched.Shutdown()
-		// chờ goroutine Run() kết thúc (tránh rò rỉ)
+
 		select {
 		case <-schedDoneC:
 		case <-time.After(5 * time.Second):
