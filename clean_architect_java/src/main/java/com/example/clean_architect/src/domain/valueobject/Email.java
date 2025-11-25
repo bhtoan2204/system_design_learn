@@ -1,10 +1,10 @@
 package com.example.clean_architect.src.domain.valueobject;
 
+import java.util.regex.Pattern;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.regex.Pattern;
 
 @Getter
 @EqualsAndHashCode(of = "value")

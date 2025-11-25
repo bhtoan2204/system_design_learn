@@ -1,8 +1,8 @@
 package com.example.clean_architect.src.domain.service;
 
-import com.example.clean_architect.src.domain.entity.User;
-
 import java.util.Optional;
+
+import com.example.clean_architect.src.domain.entity.User;
 
 public class UserDomainService {
 

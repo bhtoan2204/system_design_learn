@@ -1,9 +1,9 @@
 package com.example.clean_architect.src.domain.event;
 
-import com.example.clean_architect.src.domain.entity.User;
-
 import java.time.Instant;
 import java.util.UUID;
+
+import com.example.clean_architect.src.domain.entity.User;
 
 public class UserRegisteredEvent implements DomainEvent {
 

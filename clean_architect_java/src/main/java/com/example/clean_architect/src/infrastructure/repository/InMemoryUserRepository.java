@@ -1,14 +1,15 @@
 package com.example.clean_architect.src.infrastructure.repository;
 
-import com.example.clean_architect.src.domain.entity.User;
-import com.example.clean_architect.src.domain.repository.UserRepository;
-import com.example.clean_architect.src.domain.valueobject.Email;
-import org.springframework.stereotype.Repository;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.clean_architect.src.domain.entity.User;
+import com.example.clean_architect.src.domain.repository.UserRepository;
+import com.example.clean_architect.src.domain.valueobject.Email;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {

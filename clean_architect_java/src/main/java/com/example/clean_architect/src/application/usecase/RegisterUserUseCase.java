@@ -1,13 +1,14 @@
 package com.example.clean_architect.src.application.usecase;
 
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.example.clean_architect.src.domain.entity.User;
 import com.example.clean_architect.src.domain.event.UserRegisteredEvent;
 import com.example.clean_architect.src.domain.repository.UserRepository;
 import com.example.clean_architect.src.domain.service.UserDomainService;
 import com.example.clean_architect.src.domain.valueobject.Email;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RegisterUserUseCase {
@@ -30,11 +31,7 @@ public class RegisterUserUseCase {
 		User saved = userRepository.save(candidate);
 		UserRegisteredEvent event = new UserRegisteredEvent(saved);
 
-		return RegisterUserResponse.builder()
-				.id(saved.getId())
-				.name(saved.getName())
-				.email(saved.getEmail().getValue())
-				.registeredAt(event.occurredOn())
-				.build();
+		return RegisterUserResponse.builder().id(saved.getId()).name(saved.getName()).email(saved.getEmail().getValue())
+				.registeredAt(event.occurredOn()).build();
 	}
 }

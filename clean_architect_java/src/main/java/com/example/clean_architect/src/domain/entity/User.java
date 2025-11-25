@@ -1,12 +1,13 @@
 package com.example.clean_architect.src.domain.entity;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import com.example.clean_architect.src.domain.valueobject.Email;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 public class User {

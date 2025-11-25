@@ -1,10 +1,10 @@
 package com.example.clean_architect.src.domain.repository;
 
-import com.example.clean_architect.src.domain.entity.User;
-import com.example.clean_architect.src.domain.valueobject.Email;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import com.example.clean_architect.src.domain.entity.User;
+import com.example.clean_architect.src.domain.valueobject.Email;
 
 public interface UserRepository {
 
